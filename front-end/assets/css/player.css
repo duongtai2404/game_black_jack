@@ -1,0 +1,52 @@
+
+.main {
+    background-color: var(--primary-color);
+    height: 100vh;
+    width: 100vw;
+    padding: 20px 60px;
+}
+
+.room-info {
+    display: flex;
+    height: 150px;
+}
+
+.room-info__code {
+    background-color: var(--white-color);
+    display: flex;
+    height: 40px;
+    text-align: center;
+    font-size: 1.4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    box-shadow: 0 2px 1px var(--shadow-color);
+    color: var(--text-color);
+}
+
+/* .dealer-card {
+    background-color: var(--white-color);
+    display: flex;
+    justify-content: space-around;
+    height: 150px;
+    border-radius: 2px;
+    box-shadow: 2px 2px var(--shadow-color);
+    padding: 20px;
+} */
+
+.dealer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--white-color);
+    padding: 10px;
+    border-radius: 2px;
+    box-shadow: 2px 2px 2px var(--shadow-color);
+}
+
+.dealer__name {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    color: var(--text-color);
+}
+
