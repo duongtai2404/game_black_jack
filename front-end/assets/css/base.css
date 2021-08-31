@@ -159,6 +159,11 @@ html {
     padding: 0;
 }
 
+.control-btn--disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
 .card-list {
     display: flex;
     justify-content: space-evenly;
