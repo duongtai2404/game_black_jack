@@ -16,6 +16,7 @@ const ioController = require('./controllers/io.controller');
 // ];
 
 const gameStore = new Map();
+//{roomId : {dealer: dealerId , players : []}}
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -38,11 +39,11 @@ app.get('/login', (req, res) => {
 
 app.get('/dealer', (req, res) => {
   const roomId = Math.floor(100000 + Math.random() * 900000);
+  const dealerId = Math.floor(1000 + Math.random() * 9000);
   if (!gameStore.has(roomId)) {
-    gameStore.set(roomId, { dealer: '', player: [] });
-    console.log(gameStore);
+    gameStore.set(roomId, { dealer: { id: dealerId }, player: [] });
   }
-  res.render('dealer', { roomId: roomId });
+  res.render('dealer', { roomId: roomId, dealerId: dealerId });
 });
 
 app.get('/player', (req, res) => {
