@@ -68,7 +68,9 @@
               <button type="button" class="btn btn-secondary">Vào phòng</button>
             </div>
             <div style="margin-top: 15px">
-              <button type="button" class="btn btn-info">Tạo phòng</button>
+              <button id="createRoom" type="button" class="btn btn-info">
+                Tạo phòng
+              </button>
             </div>
             <div style="margin-top: 80px; text-align: center">
               <a href="http://localhost:3000/login">Đổi tên</a>
@@ -81,6 +83,10 @@
     <script>
       document.getElementById('hello').innerHTML =
         'Xin chào : ' + `<span style="color: red;">${name}<span>`;
+      const createRoomButton = document.getElementById('createRoom');
+      createRoomButton.onclick = () => {
+        window.location.replace('http://localhost:3000/dealer');
+      };
     </script>
   </body>
 </html>
