@@ -1,8 +1,7 @@
-localStorage.setItem(dealerId, dealerId);
-const socket = io('/');
+const host = 'http://localhost:3000'
 
-socket.emit('join-room', roomId, dealerId);
-
-socket.on('player-connection', function(userId, userName){
-    console.log(userId, userName);
-})
+function checkConnection(){
+    if (!dealerId && !roomId){
+        window.location.replace(`${host}/home`)
+    }
+}

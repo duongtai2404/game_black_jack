@@ -1,10 +1,31 @@
 const host = 'http://localhost:3000'
 
+const data = {
+    name: localStorage.getItem('name')
+}
+const option = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    body: JSON.stringify(data)
+}
+
 function createRoom(){
     const createRoomButton = document.getElementById('createRoom');
-    createRoomButton.onclick = () => {
-        window.location.replace(`${host}/dealer`);
-    };
+    createRoomButton.onclick = () => {    
+        fetch(`${host}/create_room`, option)
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(ids){
+                console.log(ids)
+                const roomId = ids.roomId;
+                const dealerId = ids.dealerId;
+                window.location.replace(`${host}/dealer/${roomId}/${dealerId}`);
+            });
+    }
 }
 
 function enterRoom(){
@@ -12,10 +33,22 @@ function enterRoom(){
     enterRoomBtn.addEventListener('click', function(){
         var roomId = document.querySelector('.input-group > input').value;
         var roomIdNumber = Number(roomId);
-        if (Number.isNaN(roomIdNumber) == false && roomId.length == 6){
+        if (Number.isNaN(roomIdNumber) == false && 
+            roomId.length == 6 && 
+            roomIdNumber > 0 && 
+            Number.isInteger(roomIdNumber)){
             
-            window.location.replace(`${host}/player/${roomId}`);
-        }
+                fetch(`${host}/enter_room/${roomIdNumber}`, option)
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(ids){
+                    console.log(ids)
+                    const roomId = ids.roomId;
+                    const playerId = ids.playerId;
+                    window.location.replace(`${host}/player/${roomId}/${playerId}`);
+                })
+            }
     })
 }
 

@@ -1,63 +1,39 @@
-// const { json } = require("body-parser");
-localStorage.setItem(playerId, playerId);
+const host = 'http://localhost:3000';
 
-const host = 'http://localhost:3000'
-
-const socket = io('/');
-
-socket.emit('join-room', roomId, playerId);
-
-socket.on('player-connection', function(userId, userName) {
-    console.log(userId, userName);
-})
-
-function handleExit(){
-    var exitBtn = document.querySelector('.exit > .control-btn.btn');
-    console.log(exitBtn) 
-    exitBtn.addEventListener('click', function(){
-        console.log(roomId, playerId)
-        var data = {
-            roomId: roomId,
-            playerId: playerId
-        }
-        exitTable(data)
-    })
+function getRoomInfo (callBack){
+    fetch (`${host}/${roomId}`)
+        .then(function(response){
+            return response.json();
+        })
+        .then(callBack);
 }
 
-function exitTable (data){
-    var option = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        body: JSON.stringify(data)
-    }
+function renderPlayers(names){
+    console.log(names)
+    document.querySelector('.dealer__name').textContent = names.dealerName;
+}
 
-    fetch (`${host}/home`, option)
-        .then(function(response){
-            console.log('then 1')
-            if (response.ok){
-                return response.json();
+
+function bet(){
+    const betBtn = document.querySelector('.player-bet__btn');
+    betBtn.addEventListener('click', function(){
+        if (!betBtn.classList.contains('control-btn--disabled')){
+            const betNum = Number(document.querySelector('.player-bet__input').value)
+            if (betNum && betNum > 0 && Number.isInteger(betNum)){
+                betBtn.classList.add('control-btn--disabled')
+            }  
+            else{
+                alert("mức cược cần lớn hơn 0 và số nguyên")
             }
-          
-        })
-        .then(function(destination){
-            window.location.replace(destination);
-        })
-        .catch(function(error){
-            console.log('loi')
-            console.log(error)
-        })
 
+        }
+
+    });
 }
 
 function start(){
-    var name = localStorage.getItem('name');
-    document.querySelector('.player__name').textContent = name;
-    handleExit();
+    getRoomInfo(renderPlayers);
+    bet();
 }
-
-
 
 start();

@@ -6,10 +6,7 @@ module.exports = (io, gameStore) => {
       if (gameStore.has(roomIdNumber)) {
         socket.join(roomIdNumber);
         const infoRoom = gameStore.get(roomIdNumber);
-        var userInfo = infoRoom.player.find(function(val){
-          return val.id == userId;
-        })
-        socket.to(roomIdNumber).emit('player-connection', +userId, userInfo.name);
+        socket.to(roomIdNumber).emit('player-connection', +userId);
       }
     });
   });

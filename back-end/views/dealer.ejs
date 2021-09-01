@@ -11,13 +11,12 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="assets/css/dealer.css" defer />
+    <link rel="stylesheet" href="/assets/css/dealer.css" defer />
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const roomId = '<%= roomId %>';
       const dealerId = '<%= dealerId %>';
     </script>
-    <script src="script/dealer.js" defer></script>
     <title>Dealer</title>
   </head>
   <body>
@@ -97,37 +96,38 @@
       </div>
       <div class="dealer row">
         <div
-          class="start col-3 d-flex justify-content-around align-items-center"
+        class="start col-3 d-flex justify-content-around align-items-center"
         >
-          <button type="button" class="btn btn-info">Phát bài</button>
-          <button type="button" class="btn btn-secondary">Chơi lại</button>
-          <button type="button" class="btn btn-danger">Thoát</button>
-        </div>
-        <div class="body col-6">
-          <div>
-            <ul class="list-group row list-dealer-card">
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="end col-3 d-flex justify-content-start align-items-center">
-          <button type="button" class="btn btn-success">Rút bài</button>
+        <button type="button" class="btn btn-info">Phát bài</button>
+        <button type="button" class="btn btn-secondary">Chơi lại</button>
+        <button type="button" class="btn btn-danger">Thoát</button>
+      </div>
+      <div class="body col-6">
+        <div>
+          <ul class="list-group row list-dealer-card">
+            <li class="list-group-item col-2 list-dealer-card-item">
+              <div class="item">card</div>
+            </li>
+            <li class="list-group-item col-2 list-dealer-card-item">
+              <div class="item">card</div>
+            </li>
+            <li class="list-group-item col-2 list-dealer-card-item">
+              <div class="item">card</div>
+            </li>
+            <li class="list-group-item col-2 list-dealer-card-item">
+              <div class="item">card</div>
+            </li>
+            <li class="list-group-item col-2 list-dealer-card-item">
+              <div class="item">card</div>
+            </li>
+          </ul>
         </div>
       </div>
+      <div class="end col-3 d-flex justify-content-start align-items-center">
+        <button type="button" class="btn btn-success">Rút bài</button>
+      </div>
     </div>
-  </body>
+  </div>
+  <script src="/script/dealer.js" defer></script>
+</body>
 </html>
