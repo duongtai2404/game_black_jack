@@ -50,12 +50,13 @@
           class="header"
           style="display: flex; justify-content: center; margin-bottom: 50px"
         >
-          <h3 id="hello">Xin chào name</h3>
+          <h3 id="hello">Xin chào</h3>
         </div>
         <div style="display: flex; align-items: center; flex-direction: column">
           <div class="body-form w-75">
             <div class="input-group">
               <input
+                id="roomId"
                 type="text"
                 class="form-control w-75"
                 placeholder="Nhập mã phòng"
@@ -84,17 +85,43 @@
     </div>
 
     <script>
+      const host = 'http://localhost:3000';
       document.getElementById('hello').innerHTML =
         'Xin chào : ' + `<span style="color: red;">${name}<span>`;
+
       const createRoomButton = document.getElementById('createRoom');
-      createRoomButton.onclick = () => {
-        window.location.replace('http://localhost:3000/dealer');
+      createRoomButton.onclick = async () => {
+        let dealerId = localStorage.getItem('dealerId');
+        if (!dealerId) {
+          dealerId = Math.floor(10000 + Math.random() * 90000);
+          localStorage.setItem('dealerId', dealerId);
+        }
+        const name = localStorage.getItem('name');
+        try {
+          const res = await axios.post(`${host}/room`, { dealerId, name });
+          const { roomId } = res.data;
+          localStorage.setItem('roomId', +roomId);
+
+          window.location.replace(`${host}/room/${roomId}?id=${dealerId}`);
+        } catch (error) {
+          console.log(error.response.status);
+        }
       };
+
       const enterRoom = document.getElementById('enterRoom');
       enterRoom.addEventListener('click', (e) => {
-        axios.post('http://localhost:3000/player', { data: 'data' });
+        const roomId = document.getElementById('roomId').value;
+        let playerId = localStorage.getItem('playerId');
+        if (!playerId) {
+          playerId = Math.floor(10000 + Math.random() * 90000);
+          localStorage.setItem('playerId', playerId);
+        }
+        const name = localStorage.getItem('name');
+        window.location.replace(
+          `${host}/room/${roomId}?id=${playerId}&name=${name}`
+        );
       });
     </script>
-    <script src="/script/home.js"></script>
+    <!-- <script src="/script/home.js"></script> -->
   </body>
 </html>

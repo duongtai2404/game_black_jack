@@ -7,13 +7,15 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const ioController = require('./controllers/io.controller');
 
-// const game = [
-//   {
-//     room_id : 1,
-//     dealer: '123',
-//     players: []
-//   }
-// ];
+const createCards = () => {
+  let cards = [];
+  for (let index = 1; index < 53; index++) {
+    cards.push(index);
+  }
+  return cards;
+};
+
+const CARDS = createCards();
 
 const gameStore = new Map();
 //{roomId : {dealer: dealerId , players : []}}
@@ -30,41 +32,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-
   res.render('home');
 });
 
-app.post('/home', (req, res)=> {
-  var roomId = Number(req.body.roomId)
-  var playerId = Number(req.body.playerId)
-  var room = gameStore.get(roomId)
-  if (room){
-    var player = room.player.find(function(player){
-      return player.id == playerId
-    })
-    if (player){
-      var idxOfPlayer = room.player.indexOf(player) 
-      if (idxOfPlayer > -1){
+app.post('/home', (req, res) => {
+  var roomId = Number(req.body.roomId);
+  var playerId = Number(req.body.playerId);
+  var room = gameStore.get(roomId);
+  if (room) {
+    var player = room.player.find(function (player) {
+      return player.id == playerId;
+    });
+    if (player) {
+      var idxOfPlayer = room.player.indexOf(player);
+      if (idxOfPlayer > -1) {
         room.player.splice(idxOfPlayer, 1);
       }
       var destination = '/home';
       res.status(200).json(destination);
-
-    }
-    else{
+    } else {
       res.status(404).json('loi khong tim thay nguoi choi');
-
     }
-    
-  }
-  else{
+  } else {
     res.status(404).json('loi khong tim thay phong');
-
   }
-
-
- 
-})
+});
 
 app.get('/login', (req, res) => {
   res.render('login');
@@ -82,40 +74,20 @@ app.get('/dealer', (req, res) => {
 app.get('/player/:roomId', (req, res) => {
   var roomId = Number(req.params.roomId);
   var room = gameStore.get(roomId);
-  if (room){
+  if (room) {
     var playerId = room.player.length;
     var dealerName = room.dealer.name;
-    room.player.push({id: playerId, bet: 0, card: []});
-    res.render('player', {roomId: roomId, playerId: playerId, dealerName: dealerName});
-    
+    room.player.push({ id: playerId, bet: 0, card: [] });
+    res.render('player', {
+      roomId: roomId,
+      playerId: playerId,
+      dealerName: dealerName,
+    });
+  } else {
+    res.render('home');
   }
-  else{
-    res.render('home')
-  }
-  console.log(room)
-
+  console.log(room);
 });
-
-// app.get('/home/:roomId/:playerId', (req, res)=>{
-//   var roomId = Number(req.params.roomId)
-//   var playerId = Number(req.params.playerId)
-//   var room = gameStore.get(roomId)
-//   if (room){
-//     var player = room.player.find(function(player){
-//       return player.id == playerId
-//     })
-//     if (player){
-//       var idxOfPlayer = room.player.indexOf(player) 
-//       if (idxOfPlayer > -1){
-//         room.player.splice(idxOfPlayer, 1);
-//       }
-//     }
-//   }
-
-//   console.log(room)
-
-//   res.render('home');
-// })
 
 ioController(io, gameStore);
 
