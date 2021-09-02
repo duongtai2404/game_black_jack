@@ -24,8 +24,7 @@ socket.on('player-connection', (player) => {
                     <p class="float-end">Cược : ${bet}</p>
                 </div>
                 </div>
-                <div class="body-item">
-                <div class="number-card">${curCards.length}</div>
+                <div class="body-item" id="${playerId}-list-card">
                 </div>
             </div>
         </li>
@@ -43,7 +42,7 @@ openBetButton.addEventListener('click', () => {
   liveToast.className += ' show';
   setTimeout(() => {
     liveToast.className = 'toast';
-  }, 2000);
+  }, 1300);
 });
 
 socket.on('player-bet', (playerId, bet) => {
@@ -52,4 +51,39 @@ socket.on('player-bet', (playerId, bet) => {
   });
   player.bet = +bet;
   document.getElementById(`${playerId}-bet`).innerHTML = 'Cược : ' + bet;
+});
+
+const distributeCardButton = document.getElementById('distributeCard');
+distributeCardButton.addEventListener('click', () => {
+  socket.emit('distribute-card', roomId);
+});
+
+socket.on('receive-card-first', (dealer, players) => {
+  data.dealer = dealer;
+  data.players = players;
+  // <img src="/assets/img/0.png" alt="" class="player-item__img" />
+
+  const listDealerCard = document.getElementById('list-dealer-card-item');
+
+  let listDealerCardItem = '';
+
+  dealer.curCards.forEach((element) => {
+    listDealerCardItem = `
+      <li class="list-group-item col-2 list-dealer-card-item">
+        <div class="item">
+          <img src="/assets/img/${element}.png" alt="" class="card-item-img" />
+        </div>
+      </li>`;
+    listDealerCard.innerHTML += listDealerCardItem;
+  });
+
+  let listPlayerCard = null;
+  let listPlayerCardItem = '';
+  players.forEach((element) => {
+    listPlayerCard = document.getElementById(`${element.playerId}-list-card`);
+    element.curCards.forEach((element) => {
+      listPlayerCardItem = `<img src="/assets/img/0.png" alt="" class="player-card-item" />`;
+      listPlayerCard.innerHTML += listPlayerCardItem;
+    });
+  });
 });

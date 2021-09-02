@@ -22,7 +22,6 @@
       const data = JSON.parse(rawData);
     </script>
 
-    <!-- <script src="/script/dealer.js" defer></script> -->
     <title>Dealer</title>
   </head>
   <body>
@@ -45,13 +44,10 @@
                   </p>
                 </div>
               </div>
-              <div class="body-item">
-                <div
-                  class="number-card"
-                  id="<%= players[i].playerId %>-numcard"
-                >
-                  <%= players[i].curCards.length %>
-                </div>
+              <div class="body-item" id="<%= players[i].playerId%>-list-card">
+                <% for(let j=0; j < players[i].curCards.length; j++) {%>
+                <img src="/assets/img/0.png" alt="" class="player-card-item" />
+                <%};%>
               </div>
             </div>
           </li>
@@ -62,7 +58,9 @@
         <div
           class="start col-3 d-flex justify-content-around align-items-center"
         >
-          <button type="button" class="btn btn-info">Phát bài</button>
+          <button type="button" class="btn btn-info" id="distributeCard">
+            Phát bài
+          </button>
           <button type="button" class="btn btn-secondary">Chơi lại</button>
           <button type="button" class="btn btn-danger">Thoát</button>
         </div>
@@ -72,9 +70,16 @@
               class="list-group row list-dealer-card"
               id="list-dealer-card-item"
             >
-              <% for(let i=0; i < dealer.curCards.length; i++) { %>
+              <% const curCardsDealer = dealer.curCards;%> <% for(let i=0; i <
+              curCardsDealer.length; i++) { %>
               <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
+                <div class="item">
+                  <img
+                    src="/assets/img/<%= curCardsDealer[i] %>.png"
+                    alt=""
+                    class="card-item-img"
+                  />
+                </div>
               </li>
               <% } %>
             </ul>

@@ -17,6 +17,31 @@
 // }
 //}
 
+const distributeCard = (roomInfo) => {
+  const { dealer, players, cards } = roomInfo;
+  let cardForDealer = randomTwoCard(cards);
+  dealer.curCards = cardForDealer.slice();
+  players.forEach((element) => {
+    let cardForPlayer = randomTwoCard(cards);
+    element.curCards = cardForPlayer.slice();
+  });
+};
+
+//card = [1,2,3,..,52]
+const randomTwoCard = (cards) => {
+  const arrayCard = [];
+  for (let index = 0; index < 2; index++) {
+    let index = randomNumber(cards.length);
+    arrayCard.push(cards[index]);
+    cards.splice(index, 1);
+  }
+  return arrayCard;
+};
+
+const randomNumber = (length) => {
+  return Math.floor(Math.random() * length);
+};
+
 module.exports = (io, gameStore) => {
   io.on('connect', (socket) => {
     socket.on('join-room', (roomId, playerId) => {
@@ -51,6 +76,13 @@ module.exports = (io, gameStore) => {
         return element.playerId === +playerId;
       });
       player.bet = +bet;
+    });
+
+    socket.on('distribute-card', (roomId) => {
+      const roomInfo = gameStore.get(+roomId);
+      distributeCard(roomInfo);
+      const { dealer, players } = roomInfo;
+      io.to(+roomId).emit('receive-card-first', dealer, players);
     });
   });
 };

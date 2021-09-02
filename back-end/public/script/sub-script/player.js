@@ -25,7 +25,7 @@ socket.on('player-connection', (player) => {
         &nbsp; cược : ${bet}
         </span>
       <img src="/assets/img/0.png" alt="" class="player-item__img" />
-      <span class="player-item__card-number"
+      <span class="player-item__card-number" id="${playerId}-player-numcard"
         >${curCards.length}</span
       >
         </li>`;
@@ -54,4 +54,51 @@ socket.on('player-bet', (playerId, bet) => {
   });
   player.bet = +bet;
   document.getElementById(`${playerId}-bet`).innerHTML = '&nbsp; cược : ' + bet;
+});
+
+socket.on('receive-card-first', (dealer, players) => {
+  data.dealer = dealer;
+  data.players = players;
+
+  const listDealerCard = document.getElementById('list-dealer-card');
+  let listDealerCardItem = '';
+
+  dealer.curCards.forEach((element) => {
+    listDealerCardItem = `
+    <li class="card-list__item">
+    <img
+      src="/assets/img/0.png"
+      alt=""
+      class="card-list__item-img"
+    />
+  </li>`;
+    listDealerCard.innerHTML += listDealerCardItem;
+  });
+
+  let numPlayerCard = null;
+  let listCurrentPlayerCard = document.getElementById(
+    'list-current-player-card'
+  );
+  let listCurrentPlayerCardItem = '';
+
+  players.forEach((element) => {
+    if (element.playerId !== +playerId) {
+      numPlayerCard = document.getElementById(
+        `${element.playerId}-player-numcard`
+      );
+      numPlayerCard.innerHTML = element.curCards.length;
+    } else {
+      element.curCards.forEach((element) => {
+        listCurrentPlayerCardItem = `
+            <li class="card-list__item">
+              <img
+                src="/assets/img/${element}.png"
+                alt=""
+                class="card-list__item-img"
+              />
+            </li>`;
+        listCurrentPlayerCard.innerHTML += listCurrentPlayerCardItem;
+      });
+    }
+  });
 });

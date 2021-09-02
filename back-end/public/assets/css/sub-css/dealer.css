@@ -28,7 +28,12 @@
 }
 .body-item {
   height: 70px;
-  border: 3px solid red;
+  display: flex;
+  justify-content: center;
+}
+.body-item .player-card-item {
+  width: 60px;
+  height: auto;
 }
 .dealer {
   height: 240px;
@@ -51,11 +56,18 @@
   align-items: center;
 }
 .dealer .body .list-dealer-card .list-dealer-card-item {
+  border: none;
   margin: 0 8px;
   padding: 0;
 }
 .dealer .body .list-dealer-card .list-dealer-card-item .item {
-  height: 192px;
+  height: 130px;
+  display: flex;
+  justify-content: center;
+  background-color: #a2e344;
+}
+.card-item-img {
+  width: 100%;
 }
 .dealer .end {
   flex-direction: column;
