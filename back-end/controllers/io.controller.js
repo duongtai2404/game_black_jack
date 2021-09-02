@@ -9,5 +9,18 @@ module.exports = (io, gameStore) => {
         socket.to(roomIdNumber).emit('player-connection', +userId);
       }
     });
+
+    socket.on('bet', (roomId, userId, betVal)=>{
+      const roomIdNumber = +roomId;
+
+      if (gameStore.has(roomId)){
+        const room = gameStore.get(roomId)
+        if (room.players.has(userId)){
+          console.log("alo")
+        }
+      }
+    })
   });
+
+
 };

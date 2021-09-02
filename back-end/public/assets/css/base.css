@@ -160,7 +160,7 @@ html {
     font-weight: 400;
 }
 
-.control-btn--disabled {
+.control-btn:disabled {
     cursor: not-allowed;
     opacity: 0.8;
 }
@@ -184,8 +184,10 @@ html {
     align-items: center;
     width: 20%;
     text-align: center;
+    height: 100%;
 }
 
 .card-list__item-img{
-    width: 100%;
+    /* width: 100%; */
+    height: 100%;
 }

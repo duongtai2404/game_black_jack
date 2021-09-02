@@ -1,7 +1,9 @@
 const host = 'http://localhost:3000'
 
-function checkConnection(){
-    if (!dealerId && !roomId){
-        window.location.replace(`${host}/home`)
-    }
-}
+const socket = io('/');
+
+socket.emit('join-room', roomId, dealerId);
+
+socket.on('player-connection', function(userId, userName){
+    console.log(userId, userName);
+})

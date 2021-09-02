@@ -47,7 +47,7 @@ app.post('/create_room', (req, res)=>{
   const dealerId = Math.floor(1000 + Math.random() * 9000);
   const name = req.body.name;
   if (!gameStore.has(roomId)) {
-    gameStore.set(roomId, { dealer: { id: dealerId, name: name }, players: [] });
+    gameStore.set(roomId, { dealer: { id: dealerId, name: name }, players: {} });
   }
   res.status(200).json({ roomId: roomId, dealerId: dealerId });
 });
@@ -58,7 +58,8 @@ app.post('/enter_room/:roomId', (req, res)=>{
   const name = req.body.name;
   if (gameStore.has(roomId)) {
     const room = gameStore.get(roomId);
-    room.players.push({id: playerId, name: name, bet: 0, card: 0})
+    room.players[playerId] = {name: name, bet: 0, card: 0}
+    console.log(room)
   }
   res.status(200).json({ roomId: roomId, playerId: playerId });
 });
@@ -105,9 +106,12 @@ app.get('/:roomId', (req, res)=>{
   const roomId = Number(req.params.roomId)
   if (gameStore.has(roomId)){
     const room = gameStore.get(roomId)
-    var playerNames = room.players.map(function(player){
-      return {id: player.id, name: player.name}
-    })
+    var playerNames = []
+    const players = room.players
+    for (idx in players){
+      const player = players[idx]
+      playerNames.push({id: idx, name: player.name})
+    }
     names = {dealerName: room.dealer.name, playerNames: playerNames}
     res.status(200).json(names)
   }
