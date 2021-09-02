@@ -10,89 +10,40 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link defer rel="stylesheet" href="assets/css/base.css" />
-    <link defer rel="stylesheet" href="assets/css/dealer.css" />
+    <link defer rel="stylesheet" href="/assets/css/dealer.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const roomId = '<%= roomId %>';
+      const rawData = '<%- JSON.stringify(data) %>';
+      const data = JSON.parse(rawData);
     </script>
 
-    <script src="script/dealer.js" defer></script>
+    <!-- <script src="/script/dealer.js" defer></script> -->
     <title>Dealer</title>
   </head>
   <body>
     <div class="main">
       <div class="code">
         <p style="display: inline-block">Mã phòng :</p>
-        <h4 style="display: inline-block"><%= roomId %></h4>
+        <h4 style="display: inline-block"><%= data.roomId %></h4>
       </div>
       <div class="teammate">
-        <ul class="list-group row list-player">
+        <ul class="list-group row list-player" id="player-list">
+          <% const players = data.players; %> <% const dealer = data.dealer; %>
+          <% for(let i=0; i < players.length; i++) { %>
           <li class="list-group-item col-md-2 col-xl-3 list-player-item">
             <div class="every-teammate">
               <div class="header-item d-flex justify-content-center">
                 <div class="w-75 clearfix">
-                  <p class="float-start">Player 1</p>
-                  <p class="float-end">Cược : 2</p>
+                  <p class="float-start"><%= players[i].playerName %></p>
+                  <p class="float-end">Cược : <%= players[i].bet %></p>
                 </div>
               </div>
               <div class="body-item">
-                <div class="number-card">5</div>
+                <div class="number-card"><%= players[i].curCards.length %></div>
               </div>
             </div>
           </li>
-          <li class="list-group-item col-md-2 col-xl-3 list-player-item">
-            <div class="every-teammate">
-              <div class="header-item d-flex justify-content-center">
-                <div class="w-75 clearfix">
-                  <p class="float-start">Player 1</p>
-                  <p class="float-end">Cược : 2</p>
-                </div>
-              </div>
-              <div class="body-item">
-                <div class="number-card">5</div>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item col-md-2 col-xl-3 list-player-item">
-            <div class="every-teammate">
-              <div class="header-item d-flex justify-content-center">
-                <div class="w-75 clearfix">
-                  <p class="float-start">Player 1</p>
-                  <p class="float-end">Cược : 2</p>
-                </div>
-              </div>
-              <div class="body-item">
-                <div class="number-card">5</div>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item col-md-2 col-xl-3 list-player-item">
-            <div class="every-teammate">
-              <div class="header-item d-flex justify-content-center">
-                <div class="w-75 clearfix">
-                  <p class="float-start">Player 1</p>
-                  <p class="float-end">Cược : 2</p>
-                </div>
-              </div>
-              <div class="body-item">
-                <div class="number-card">5</div>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item col-md-2 col-xl-3 list-player-item">
-            <div class="every-teammate">
-              <div class="header-item d-flex justify-content-center">
-                <div class="w-75 clearfix">
-                  <p class="float-start">Player 1</p>
-                  <p class="float-end">Cược : 2</p>
-                </div>
-              </div>
-              <div class="body-item">
-                <div class="number-card">5</div>
-              </div>
-            </div>
-          </li>
+          <% } %>
         </ul>
       </div>
       <div class="dealer row">
@@ -105,22 +56,15 @@
         </div>
         <div class="body col-6">
           <div>
-            <ul class="list-group row list-dealer-card">
+            <ul
+              class="list-group row list-dealer-card"
+              id="list-dealer-card-item"
+            >
+              <% for(let i=0; i < dealer.curCards.length; i++) { %>
               <li class="list-group-item col-2 list-dealer-card-item">
                 <div class="item">card</div>
               </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
-              <li class="list-group-item col-2 list-dealer-card-item">
-                <div class="item">card</div>
-              </li>
+              <% } %>
             </ul>
           </div>
         </div>
@@ -130,4 +74,5 @@
       </div>
     </div>
   </body>
+  <script src="/script/sub-script/dealer.js"></script>
 </html>

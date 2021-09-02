@@ -1,8 +1,10 @@
-localStorage.setItem(dealerId, dealerId);
-const socket = io('/');
+console.log(dealer.dealerId);
+console.log(players);
 
-socket.emit('join-room', roomId, dealerId);
+// const socket = io('/');
 
-socket.on('player-connection', function(userId, userName){
-    console.log(userId, userName);
-})
+// socket.emit('join-room', roomId, dealerId);
+
+// socket.on('player-connection', function (userId, userName) {
+//   console.log(userId, userName);
+// });
