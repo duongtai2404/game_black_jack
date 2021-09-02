@@ -61,7 +61,7 @@
   text-align: center;
   background-color: var(--white-color);
   display: flex;
-  height: 100%;
+  /* height: 100%; */
   width: 120px;
   justify-content: center;
   align-items: center;

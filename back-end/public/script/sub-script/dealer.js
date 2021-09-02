@@ -35,3 +35,21 @@ socket.on('player-connection', (player) => {
     playerList.innerHTML += playerItem;
   }
 });
+
+const openBetButton = document.getElementById('openBet');
+openBetButton.addEventListener('click', () => {
+  socket.emit('open-bet', roomId);
+  const liveToast = document.getElementById('liveToast');
+  liveToast.className += ' show';
+  setTimeout(() => {
+    liveToast.className = 'toast';
+  }, 2000);
+});
+
+socket.on('player-bet', (playerId, bet) => {
+  const player = data.players.find((element) => {
+    return +element.playerId === +playerId;
+  });
+  player.bet = +bet;
+  document.getElementById(`${playerId}-bet`).innerHTML = 'Cược : ' + bet;
+});

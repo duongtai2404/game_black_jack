@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/assets/css/reset.css" />
     <link rel="stylesheet" href="/assets/css/base.css" />
-    <link rel="stylesheet" href="/assets/css/player.css" />
+    <link rel="stylesheet" href="/assets/css/sub-css/player.css" />
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
@@ -43,7 +43,12 @@
           <% for(let i =0; i < players.length; i++) { %> <%
           if(players[i].playerId === data.curPlayer) continue; %>
           <li class="player-item grid__col--2">
-            <span class="player-item__name"><%= players[i].playerName %></span>
+            <span class="player-item__name"
+              ><%= players[i].playerName %>
+              <span id="<%= players[i].playerId%>-bet">
+                &nbsp; cược : <%= players[i].bet%>
+              </span>
+            </span>
             <img src="/assets/img/0.png" alt="" class="player-item__img" />
             <span class="player-item__card-number"
               ><%= players[i].curCards.length %></span
@@ -56,12 +61,16 @@
             <button class="control-btn btn">Thoát</button>
           </div>
           <div class="player-bet grid__col--2">
+            <h2 id="infoBet"></h2>
             <input
               type="number"
               placeholder="Mức cược"
               class="player-bet__input"
+              id="betInput"
             />
-            <button class="btn control-btn player-bet__btn">Đặt cược</button>
+            <button class="btn control-btn player-bet__btn" disabled id="bet">
+              Đặt cược
+            </button>
           </div>
           <div class="grid__col--6 player">
             <% const curPlayerId = data.curPlayer%> <% const currentPlayer =

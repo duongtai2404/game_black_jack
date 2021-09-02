@@ -1,0 +1,72 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: #b6dca3;
+}
+.code {
+  padding: 20px 20px;
+  height: 10vh;
+}
+.teammate {
+  min-height: 53vh;
+}
+.list-player {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.list-player-item {
+  margin: 0 30px 50px;
+  border-radius: 10px;
+}
+.every-teammate {
+  height: 100px;
+  background-color: white;
+}
+.header-item {
+  height: 30px;
+}
+.body-item {
+  height: 70px;
+  border: 3px solid red;
+}
+.dealer {
+  height: 240px;
+}
+.dealer .start {
+  flex-direction: column;
+  padding: 10px 0px;
+}
+.dealer .start button {
+  width: 150px;
+}
+.dealer .body {
+  background-color: greenyellow;
+  border-radius: 15px;
+  padding: 24px 5px;
+}
+.dealer .body .list-dealer-card {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.dealer .body .list-dealer-card .list-dealer-card-item {
+  margin: 0 8px;
+  padding: 0;
+}
+.dealer .body .list-dealer-card .list-dealer-card-item .item {
+  height: 192px;
+}
+.dealer .end {
+  flex-direction: column;
+  padding: 10px 0px;
+}
+.dealer .end button {
+  margin-top: 24px;
+  width: 150px;
+}
+
+.toast-body {
+  font-weight: 600;
+  text-align: center;
+}
