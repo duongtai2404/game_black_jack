@@ -10,6 +10,14 @@ socket.on('player-connection', function(userId, userName) {
 
 var cardlist = [1, 2]
 
+
+function exitGame(){
+    const exitBtn = document.querySelector('.exit__btn');
+    exitBtn.addEventListener('click', function(){
+        console.log('exit clicked')
+    })
+}
+
 function getRoomInfo (callBack){
     fetch (`${host}/${roomId}`)
         .then(function(response){
@@ -85,11 +93,30 @@ function done (){
     })
 }
 
+function showCard(){
+    var otherPlayer = document.querySelector('li.player-item')
+    otherPlayer.addEventListener('click', function(){
+        document.querySelector('.modal').style.display = 'flex';
+        console.log('other player clicked')
+    })
+}
+
+function hideCard(){
+    var closeBtn = document.querySelector('.close-player-btn');
+    closeBtn.addEventListener('click', function(){
+        document.querySelector('.modal').style.display = 'none';
+
+    })
+}
+
 function start(){
     getRoomInfo(renderPlayers);
     // renderCardList();
+    exitGame();
     bet();
     hitCard();
+    showCard();
+    hideCard();
 }
 
 start();
