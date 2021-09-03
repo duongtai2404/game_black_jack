@@ -10,13 +10,15 @@ const { RSA_NO_PADDING } = require('constants');
 const { render } = require('ejs');
 const { json } = require('body-parser');
 
-// const game = [
-//   {
-//     room_id : 1,
-//     dealer: '123',
-//     players: []
-//   }
-// ];
+const createCards = () => {
+  let cards = [];
+  for (let index = 1; index < 53; index++) {
+    cards.push(index);
+  }
+  return cards;
+};
+
+const CARDS = createCards();
 
 const gameStore = new Map();
 //{roomId : {dealer: dealerId , players : []}}
@@ -33,7 +35,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-
   res.render('home');
 });
 
@@ -181,27 +182,6 @@ app.get('/:roomId', (req, res)=>{
 //   var roomId = req.body.roomId
 //   console.log(roomId)
 //   res.status(200).json(gameStore.get(roomId).player)
-// })
-
-// app.get('/home/:roomId/:playerId', (req, res)=>{
-//   var roomId = Number(req.params.roomId)
-//   var playerId = Number(req.params.playerId)
-//   var room = gameStore.get(roomId)
-//   if (room){
-//     var player = room.player.find(function(player){
-//       return player.id == playerId
-//     })
-//     if (player){
-//       var idxOfPlayer = room.player.indexOf(player) 
-//       if (idxOfPlayer > -1){
-//         room.player.splice(idxOfPlayer, 1);
-//       }
-//     }
-//   }
-
-//   console.log(room)
-
-//   res.render('home');
 // })
 
 ioController(io, gameStore);

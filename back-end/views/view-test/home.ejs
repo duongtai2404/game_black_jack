@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
+      const host = 'http://localhost:3000';
       const name = localStorage.getItem('name');
       if (name === null) {
-        window.location.replace('http://localhost:3000/login');
+        window.location.replace(`${host}/login`);
       }
     </script>
     <link
@@ -50,12 +51,13 @@
           class="header"
           style="display: flex; justify-content: center; margin-bottom: 50px"
         >
-          <h3 id="hello">Xin chào name</h3>
+          <h3 id="hello">Xin chào</h3>
         </div>
         <div style="display: flex; align-items: center; flex-direction: column">
           <div class="body-form w-75">
             <div class="input-group">
               <input
+                id="roomId"
                 type="text"
                 class="form-control w-75"
                 placeholder="Nhập mã phòng"
@@ -83,18 +85,6 @@
       </div>
     </div>
 
-    <script>
-      document.getElementById('hello').innerHTML =
-        'Xin chào : ' + `<span style="color: red;">${name}<span>`;
-      const createRoomButton = document.getElementById('createRoom');
-      createRoomButton.onclick = () => {
-        window.location.replace('http://localhost:3000/dealer');
-      };
-      const enterRoom = document.getElementById('enterRoom');
-      enterRoom.addEventListener('click', (e) => {
-        axios.post('http://localhost:3000/player', { data: 'data' });
-      });
-    </script>
-    <script src="/script/home.js"></script>
+    <script src="/script/sub-script/home.js"></script>
   </body>
 </html>

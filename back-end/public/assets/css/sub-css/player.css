@@ -48,38 +48,28 @@
 }
 
 .player-list {
-    margin: 50px 100px 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-evenly;
-    list-style-type: none;
-    height: 44vh;
-    align-items: center;
-    flex-wrap: wrap;
+  margin: 50px 120px 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  list-style-type: none;
+  height: 17vh;
+  align-items: center;
 }
 
 .player-item {
-    text-align: center;
-    background-color: var(--white-color);
-    display: flex;
-    height: 20vh;
-    width: 15%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 5px;
-    box-shadow: 0 2px 2px var(--shadow-color);
-    margin: 0px 10px;
-    cursor: pointer;
-    position: relative;
-}
-
-.player-item__info{
-    margin-top: 5px;
-    width: 100%;
-    font-size: 1.4rem;
-    display: flex;
-    justify-content: space-between;
+  text-align: center;
+  background-color: var(--white-color);
+  display: flex;
+  /* height: 100%; */
+  width: 120px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px var(--shadow-color);
+  margin: 0;
+  cursor: pointer;
 }
 
 .player-item__name {
@@ -97,8 +87,9 @@
 }
 
 .player-area {
-    margin-top: 80px;
-    display: flex;
+  margin-top: 80px;
+  display: flex;
+  /* justify-content: space-evenly; */
 }
 
 .exit {
@@ -124,16 +115,16 @@
   background-color: aqua;
 }
 
-.player{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--white-color);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 2px var(--shadow-color);
-    justify-content: space-between;
-    height: 170px;
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px var(--shadow-color);
+  justify-content: space-between;
+  height: 160px;
 }
 
 .player__name {
@@ -152,36 +143,7 @@
   margin-top: 10px;
 }
 
-
-.player--betted {
-    border: 3px solid var(--betted-color);
-  }
-.player--win {
-  background-color: var(--win-color);
-  }
-  
-.player--lose{
-    background-color: var(--lose-color);
-  
-  }
-
-.other-player-info{
-    display: flex;
-    align-items: center;
-    height: 100%;
+.player-bet__btn:disabled {
+  cursor: not-allowed;
+  background-color: grey;
 }
-.other-player{
-    display: flex;
-    justify-content: center;
-      width: 100%;
-      height: 250px;
-  }
-
-.other-player__card{
-    height: 100%;
-}
-
-.close-player-btn{
-    width: 20%;
-    background-color: var(--primary-color);
-} 
