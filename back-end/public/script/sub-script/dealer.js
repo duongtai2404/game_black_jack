@@ -16,12 +16,23 @@ socket.on('player-connection', (player) => {
   if (existPlayer === undefined) {
     data.players.push(player);
     const playerItem = `
-        <li class="list-group-item col-md-2 col-xl-3 list-player-item">
+        <li class="list-group-item col-md-2 col-xl-3 list-player-item" id="${playerId}-player">
             <div class="every-teammate">
+            <h5
+              class="notification-turn"
+              id="${playerId}-notification-turn"
+            >
+            </h5>
                 <div class="header-item d-flex justify-content-center">
                 <div class="w-75 clearfix">
-                    <p class="float-start">${playerName}</p>
-                    <p class="float-end">Cược : ${bet}</p>
+                    <p class="float-start" 
+                    style="
+                    color: white;
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    font-style: italic;
+                  ">${playerName}</p>
+                    <p class="float-end" style="color: white">Cược : ${bet}</p>
                 </div>
                 </div>
                 <div class="body-item" id="${playerId}-list-card">
@@ -61,7 +72,6 @@ distributeCardButton.addEventListener('click', () => {
 socket.on('receive-card-first', (dealer, players) => {
   data.dealer = dealer;
   data.players = players;
-  // <img src="/assets/img/0.png" alt="" class="player-item__img" />
 
   const listDealerCard = document.getElementById('list-dealer-card-item');
 
@@ -86,4 +96,26 @@ socket.on('receive-card-first', (dealer, players) => {
       listPlayerCard.innerHTML += listPlayerCardItem;
     });
   });
+
+  setTimeout(() => {
+    socket.emit('allow-plug-out-card', roomId);
+  }, 2000);
+});
+
+socket.on('turn-plug-out', (playerId) => {
+  if (+dealerId === +playerId) {
+    data.dealer.turnPlugOut = true;
+  } else {
+    const player = data.players.find((element) => {
+      return element.playerId === +playerId;
+    });
+    player.turnPlugOut = true;
+    console.log(playerId);
+    const playerDom = document.getElementById(`${playerId}-player`);
+    playerDom.className += ' turn-player';
+    const notification = document.getElementById(
+      `${playerId}-notification-turn`
+    );
+    notification.innerHTML = 'Lượt người chơi';
+  }
 });

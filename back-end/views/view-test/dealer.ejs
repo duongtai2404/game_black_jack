@@ -10,11 +10,6 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <!-- <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script> -->
     <link defer rel="stylesheet" href="/assets/css/sub-css/dealer.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -33,13 +28,47 @@
       <div class="teammate">
         <ul class="list-group row list-player" id="player-list">
           <% const players = data.players; %> <% const dealer = data.dealer; %>
-          <% for(let i=0; i < players.length; i++) { %>
-          <li class="list-group-item col-md-2 col-xl-3 list-player-item">
+          <% for(let i=0; i < players.length; i++) { %> <%let turnPlayer =
+          players[i].turnPlugOut === false ? '' : 'turn-player'; %>
+          <li
+            class="
+              list-group-item
+              col-md-2 col-xl-3
+              list-player-item
+              <%=
+              turnPlayer
+              %>
+            "
+            id="<%= players[i].playerId %>-player"
+          >
+            <%let notificationTurn = players[i].turnPlugOut === false ? '' :
+            'Lượt người chơi';%>
+
+            <h5
+              class="notification-turn"
+              id="<%= players[i].playerId %>-notification-turn"
+            >
+              <%= notificationTurn %>
+            </h5>
             <div class="every-teammate">
               <div class="header-item d-flex justify-content-center">
                 <div class="w-75 clearfix">
-                  <p class="float-start"><%= players[i].playerName %></p>
-                  <p class="float-end" id="<%= players[i].playerId %>-bet">
+                  <p
+                    class="float-start"
+                    style="
+                      color: white;
+                      font-size: 1.2rem;
+                      font-weight: 600;
+                      font-style: italic;
+                    "
+                  >
+                    <%= players[i].playerName %>
+                  </p>
+                  <p
+                    class="float-end"
+                    id="<%= players[i].playerId %>-bet"
+                    style="color: white"
+                  >
                     Cược : <%= players[i].bet %>
                   </p>
                 </div>
@@ -64,7 +93,11 @@
           <button type="button" class="btn btn-secondary">Chơi lại</button>
           <button type="button" class="btn btn-danger">Thoát</button>
         </div>
-        <div class="body col-6">
+        <% let turnDealer = dealer.turnPlugOut === true ? 'turn-dealer' : ''%>
+        <div class="body col-6 <%= turnDealer %>">
+          <h3 class="dealer-name <%= turnDealer %>">
+            <%= dealer.dealerName %>
+          </h3>
           <div>
             <ul
               class="list-group row list-dealer-card"

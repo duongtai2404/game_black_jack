@@ -84,5 +84,12 @@ module.exports = (io, gameStore) => {
       const { dealer, players } = roomInfo;
       io.to(+roomId).emit('receive-card-first', dealer, players);
     });
+
+    socket.on('allow-plug-out-card', (roomId) => {
+      const roomInfo = gameStore.get(+roomId);
+      const firstPlayer = roomInfo.players[0];
+      firstPlayer.turnPlugOut = true;
+      io.to(+roomId).emit('turn-plug-out', firstPlayer.playerId);
+    });
   });
 };

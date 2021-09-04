@@ -64,13 +64,19 @@ app.get('/room/:roomId', canGoRoom, (req, res) => {
         dealerName: userName,
         curCards: [],
         joinRoomIo: false,
+        turnPlugOut: false,
       },
       players: [],
       cards: CARDS.slice(),
     });
 
     const data = {
-      dealer: { dealerId: userId, dealerName: userName, curCards: [] },
+      dealer: {
+        dealerId: userId,
+        dealerName: userName,
+        curCards: [],
+        turnPlugOut: false,
+      },
       roomId: roomId,
       players: [],
     };
@@ -97,6 +103,7 @@ app.get('/room/:roomId', canGoRoom, (req, res) => {
           curCards: [],
           bet: 0,
           joinRoomIo: false,
+          turnPlugOut: false,
         });
       }
       const data = {
