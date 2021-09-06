@@ -20,11 +20,19 @@ function createRoom(){
                 return response.json();
             })
             .then(function(ids){
-                console.log(ids)
-                const roomId = ids.roomId;
-                const dealerId = ids.dealerId;
-                window.location.replace(`${host}/dealer/${roomId}/${dealerId}`);
-            });
+                if (ids.roomId){
+                    console.log(ids)
+                    const roomId = ids.roomId;
+                    const dealerId = ids.dealerId;
+                    window.location.replace(`${host}/dealer/${roomId}/${dealerId}`);
+                }
+                else{
+                    window.location.replace(`${host}/home/${ids.msg}`)
+                    
+                }
+            })
+            
+        // window.location.replace(`${host}/dealer`)
     }
 }
 
@@ -43,11 +51,19 @@ function enterRoom(){
                     return response.json();
                 })
                 .then(function(ids){
-                    console.log(ids)
-                    const roomId = ids.roomId;
-                    const playerId = ids.playerId;
-                    window.location.replace(`${host}/player/${roomId}/${playerId}`);
+                    if (ids.roomId){
+                        console.log(ids)
+                        const roomId = ids.roomId;
+                        const playerId = ids.playerId;
+                        window.location.replace(`${host}/player/${roomId}/${playerId}`);
+                        
+                    }
+                    else{
+
+                        window.location.replace(`${host}/home/${ids.msg}`)
+                    }
                 })
+                
             }
     })
 }
@@ -55,6 +71,9 @@ function enterRoom(){
 function start(){
     createRoom();
     enterRoom();
+    if (msg){
+        alert(msg);
+    }
 }
 
 start();

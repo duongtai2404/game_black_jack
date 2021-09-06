@@ -9,11 +9,14 @@
     --betted-color: rgb(103, 143, 218);
     --win-color: rgb(29, 201, 52);
     --lose-color: rgb(238, 96, 96);
+    --turn-color: rgb(233, 243, 88);
+    --end-turn-color: rgb(40, 189, 35);
 
     /* size */
     --font-size: 1.4rem;
     --border-radius: 3px;
-}
+    --border-size: 5px;
+}   
 
 * {
     box-sizing: inherit;

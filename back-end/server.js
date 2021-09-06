@@ -35,7 +35,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-  res.render('home');
+  res.render('home', {msg: null});
+});
+
+app.get('/home/:msg', (req, res) => {
+  var msg = req.params.msg;
+  res.render('home', {msg: msg});
 });
 
 app.get('/login', (req, res) => {
@@ -43,26 +48,68 @@ app.get('/login', (req, res) => {
 });
 
 
+// app.get('/dealer', (req, res)=>{
+//   const roomId = Math.floor(100000 + Math.random() * 900000);
+//   const dealerId = Math.floor(1000 + Math.random() * 9000);
+//   if (!gameStore.has(roomId)) {
+//     res.render('dealer', {roomId: roomId, dealerId: dealerId})
+//   }
+//   else{
+//     res.render('home')
+//   }
+//   // res.render('dealer')
+// })
+
 app.post('/create_room', (req, res)=>{
-  const roomId = Math.floor(100000 + Math.random() * 900000);
+  var roomId = Math.floor(100000 + Math.random() * 900000);
+  var noRoom = setTimeout(function(){
+    var msg = "Không tạo được phòng"
+    console.log(msg)
+    res.status(200).json({ roomId: null, msg: msg });
+  }, 3000)
+  // noRoom;
+  while(gameStore.has(roomId)){
+    roomId = Math.floor(100000 + Math.random() * 900000);
+  }
+  clearTimeout(noRoom)
   const dealerId = Math.floor(1000 + Math.random() * 9000);
   const name = req.body.name;
   if (!gameStore.has(roomId)) {
-    gameStore.set(roomId, { dealer: { id: dealerId, name: name }, players: {} });
+    gameStore.set(roomId, { dealer: { id: dealerId, name: name, card: 0 }, players: new Map() , cards: [], playersCard: new Map(), isPlaying: -1});
+    res.status(200).json({ roomId: roomId, dealerId: dealerId });
   }
-  res.status(200).json({ roomId: roomId, dealerId: dealerId });
 });
 
 app.post('/enter_room/:roomId', (req, res)=>{
   const roomId = Number(req.params.roomId)
-  const playerId = Math.floor(1000 + Math.random() * 9000);
   const name = req.body.name;
   if (gameStore.has(roomId)) {
     const room = gameStore.get(roomId);
-    room.players[playerId] = {name: name, bet: 0, card: 0}
-    console.log(room)
+    if (room.isPlaying < 0){
+      var noRoom = setTimeout(function(){
+        var msg = "Không vào được phòng"
+        console.log(msg)
+        res.status(200).json({ roomId: null, msg: msg });
+      }, 3000)
+      var playerId = Math.floor(1000 + Math.random() * 9000);
+      while(room.players.has(playerId)){
+        playerId = Math.floor(1000 + Math.random() * 9000);
+      }
+      clearTimeout(noRoom);
+      room.players.set(playerId, {name: name, bet: 0, card: 0}) 
+      console.log(gameStore.get(roomId))
+      res.status(200).json({ roomId: roomId, playerId: playerId });
+
+    }else{
+        var msg = "Phòng đang chiến, vui lòng đợi xíu nha !"
+        console.log(msg)
+        res.status(200).json({ roomId: null, msg: msg });
+    }
+  }else{
+      var msg = "Phòng không tồn tại"
+      console.log(msg)
+      res.status(200).json({ roomId: null, msg: msg });
   }
-  res.status(200).json({ roomId: roomId, playerId: playerId });
 });
 
 app.get('/dealer/:roomId/:dealerId', (req, res)=>{
@@ -74,12 +121,13 @@ app.get('/dealer/:roomId/:dealerId', (req, res)=>{
       res.render('dealer', {roomId: roomId, dealerId: dealerId})
     }
     else{
-      res.render('home')
+      res.render('home', {msg: "Không tồn tại chủ phòng này"});
     }
   
   }
   else{
-    res.render('home')
+    res.render('home', {msg: "Không tồn tại phòng này"});
+
 
   }
 })
@@ -89,16 +137,19 @@ app.get('/player/:roomId/:playerId', (req, res)=>{
   const playerId = Number(req.params.playerId)
 
   if (gameStore.has(roomId)){
-    // if (gameStore.get(roomId).dealer.id == dealerId){
-    //   res.render('dealer', {roomId: roomId, dealerId: dealerId})
-    // }
-    // else{
-    //   res.render('home')
-    // }
-    res.render('player', {roomId: roomId, playerId: playerId})
+    
+    if (gameStore.get(roomId).players.has(playerId)){
+
+      res.render('player', {roomId: roomId, playerId: playerId})
+    }
+    else{
+      res.render('home', {msg: 'Không tồn tại người chơi này'});
+
+    }
   }
   else{
-    res.render('home')
+    res.render('home', {msg: "Không tồn tại phòng này"});
+
 
   }
 })
@@ -107,16 +158,34 @@ app.get('/:roomId', (req, res)=>{
   const roomId = Number(req.params.roomId)
   if (gameStore.has(roomId)){
     const room = gameStore.get(roomId)
-    var playerNames = []
-    const players = room.players
-    for (idx in players){
-      const player = players[idx]
-      playerNames.push({id: idx, name: player.name})
-    }
-    names = {dealerName: room.dealer.name, playerNames: playerNames}
-    res.status(200).json(names)
+    // console.log(room.players)
+    var players = []
+    room.players.forEach(function(val, idx){
+      players.push({id: idx, name: val.name, bet: val.bet, card: val.card})
+    })
+    const dealer = room.dealer.name
+    
+    var roomInfo = {dealer: dealer, players: players}
+    // console.log(roomInfo);
+    res.status(200).json(roomInfo)
   }
 })
+
+app.get('/:roomId/:userId', (req, res)=>{
+  const roomId = Number(req.params.roomId)
+  const userId = Number(req.params.userId)
+
+  if (gameStore.has(roomId)){
+    const room = gameStore.get(roomId)
+    console.log('receive card room', room)
+    if (room.playersCard.has(userId)){
+      const playerCard = room.playersCard.get(userId);
+      console.log('receive card', playerCard, userId)
+      res.status(200).json(playerCard);
+    }
+  }
+})
+
 
 
 // app.delete('/home', (req, res)=> {

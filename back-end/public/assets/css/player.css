@@ -37,7 +37,7 @@
   border-radius: 5px;
   box-shadow: 2px 2px 2px var(--shadow-color);
   justify-content: space-between;
-  height: 160px;
+  height: 170px;
 }
 
 .dealer__name {
@@ -121,7 +121,7 @@
 
 .player-bet__btn {
   margin-top: 10px;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 
 .player{
@@ -133,7 +133,7 @@
     border-radius: 5px;
     box-shadow: 2px 2px 2px var(--shadow-color);
     justify-content: space-between;
-    height: 170px;
+    height: 200px;
 }
 
 .player__name {
@@ -154,8 +154,17 @@
 
 
 .player--betted {
-    border: 3px solid var(--betted-color);
+    border: var(--border-size) solid var(--betted-color);
   }
+
+.player--turn{
+  border: var(--border-size) solid var(--turn-color);
+
+}
+.player--end-turn{
+  border: var(--border-size) solid var(--end-turn-color);
+
+}
 .player--win {
   background-color: var(--win-color);
   }
