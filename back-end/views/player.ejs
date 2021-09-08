@@ -1,121 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/reset.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/player.css">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/reset.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/player.css" />
+
     <title>Document</title>
     <script>
-        const roomId = '<%= roomId %>';
-        const playerId = '<%= playerId %>';
-      </script>
-</head>
-<body>
+      const roomId = '<%= roomId %>';
+      const playerId = '<%= playerId %>';
+    </script>
+  </head>
+  <body>
     <div class="main">
-        <div class="grid main-table">
-            <div class="grid-row room-info">
-                <span class="grid__col--2 room-info__code"><%= roomId %></span>
-                <div class="grid__col--1"></div>
-                <div class="grid__col--6 dealer">
-                    <div class="dealer__name"></div>
-                    <ul class="card-list">
-                        <!-- <li class="card-list__item">
-                            <img src="/assets/img/0.png" alt="" class="card-list__item-img">
+      <div class="grid main-table">
+        <div class="grid-row room-info">
+          <span class="grid__col--2 room-info__code"><%= roomId %></span>
+          <div class="grid__col--1"></div>
+          <div class="grid__col--6 dealer">
+            <div class="dealer__name"></div>
+            <ul class="card-list"></ul>
+          </div>
+        </div>
+        <ul class="grid_row player-list"></ul>
+        <div class="grid-row player-area">
+          <div class="exit grid__col--1">
+            <button class="control-btn btn exit__btn">Thoát</button>
+          </div>
+          <div class="player-bet grid__col--2">
+            <input
+              type="number"
+              placeholder="Mức cược"
+              class="player-bet__input"
+            />
+            <button class="btn control-btn player-bet__btn">Đặt cược</button>
+          </div>
+          <div class="grid__col--6 player">
+            <div class="player__name">Le Tuan Dat</div>
+            <ul class="card-list player__card"></ul>
+          </div>
 
-                        </li>
-                        <li class="card-list__item">
-                            <img src="/assets/img/0.png" alt="" class="card-list__item-img">
-
-                        </li>
-                        <li class="card-list__item">
-                            <img src="/assets/img/0.png" alt="" class="card-list__item-img">
-
-                        </li> -->
-                    </ul>
-                </div>
-
+          <div class="player-control grid__col--2">
+            <button class="btn control-btn hit-btn" disabled>Rút</button>
+            <button class="btn control-btn done-btn" disabled>Thôi</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal">
+        <div class="grid other-player-info">
+          <div class="grid-row other-player">
+            <div class="grid__col--6 player other-player__card">
+              <div class="player__name">Le Tuan Dat</div>
+              <ul class="card-list player__card">
+                <li class="card-list__item">
+                  <img
+                    src="/assets/img/2.png"
+                    alt=""
+                    class="card-list__item-img"
+                  />
+                </li>
+              </ul>
+              <button class="close-player-btn btn control-btn">Đóng</button>
             </div>
-
-
-            <ul class="grid_row player-list">
-                <!-- <li class="player-item grid__col--2 player--betted">
-                    <span class="player-item__name">Le Tuan Dat</span>
-                    <img src="/assets/img/0.png" alt="" class="player-item__img">
-                    <div class="player-item__info">
-                      <div>
-                        <span>Bài: </span>
-                        <span class="player-item__card-number">3</span>
-                      </div>
-                      <div>
-                        <span>Cược: </span>
-                        <span class="player-item__bet">10</span>
-                      </div>
-  
-                    </div>
-  
-                </li> -->
-                
-            </ul>
-            
-           
-            <div class="grid-row player-area">
-                <div class="exit grid__col--1">
-                    <button class="control-btn btn exit__btn">Thoát</button>
-
-                </div>
-                <div class="player-bet grid__col--2">
-                    <input type="number" placeholder="Mức cược" class="player-bet__input">
-                    <button class="btn control-btn player-bet__btn">Đặt cược</button>
-                </div>
-                <div class="grid__col--6 player">
-                    <div class="player__name">Le Tuan Dat</div>
-                    <ul class="card-list player__card">
-                       
-                    </ul>
-                </div>
-
-                <div class="player-control grid__col--2">
-                    <button class="btn control-btn hit-btn " disabled>Rút</button>
-                    <button class="btn control-btn done-btn " disabled>Thôi </button>
-
-                </div>
-
+          </div>
         </div>
-
-
-        </div>
-        <div class="modal ">
-            <div class="grid other-player-info">
-
-                <div class="grid-row other-player ">
-                    
-                    <div class="grid__col--6 player other-player__card">
-                        <div class="player__name">Le Tuan Dat</div>
-                        <ul class="card-list player__card">
-                            <li class="card-list__item">
-                                <img src="/assets/img/2.png" alt="" class="card-list__item-img">
-                            </li>
-                            
-                                            
-                        </ul>
-                        <button class="close-player-btn btn control-btn">Đóng</button>
-                    </div>
-    
-                </div>
-            </div>
-
-        </div>
+      </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script/player.js"></script>
     <script type="text/javascript">
-        window.onbeforeunload = function() {
-            return "Dude, are you sure you want to leave? Think of the kittens!";
-        }
+      window.onbeforeunload = function () {
+        return 'Dude, are you sure you want to leave? Think of the kittens!';
+      };
     </script>
-</body>
+  </body>
 </html>
