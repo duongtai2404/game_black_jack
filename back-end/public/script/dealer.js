@@ -2,6 +2,9 @@ const host = 'http://localhost:3000'
 
 const socket = io('/');
 
+var endTurnList = []
+var showedCardList = []
+
 function errorListen(){
     socket.on('error', function(msg){
         console.log(msg)
@@ -33,7 +36,7 @@ function renderPlayerList(roomInfo){
                 imgSrc = '/assets/img/0.png'
             }
             var html = `
-            <li class="player-item grid__col--2 ${bettedClass}" onclick=handleShowCard(${val.id}) id="player-${val.id}">
+            <li class="player-item grid__col--2 ${bettedClass}" onclick=showCard(${val.id}) id="player-${val.id}">
                 <span class="player-item__name">${val.name}</span>
                 <img src="${imgSrc}" alt="" class="player-item__img">
                 <div class="player-item__info">
@@ -70,39 +73,17 @@ function renderPlayerList(roomInfo){
         
 }
 
-function handleShowCard(userId){
-    var playerItem = document.querySelector(`#player-${userId}`)
-    var cardNum = Number(playerItem.querySelector('.player-item_card-number'))
-    if (cardNum > 0){
-        var confirmform = playerItem.querySelector('.confirm-form');
-        var acceptBtn = playerItem.querySelector('.confirm-form__btn--accept');
-        var rejectBtn = playerItem.querySelector('.confirm-form__btn--reject');
-        var playerName = playerItem.querySelector('.player-item__name').textContent;
-    
-        confirmform.style.display = 'flex'
-    
-        acceptBtn.addEventListener('click', function(e){
-            e.stopPropagation();
-            confirmform.style.display = 'none';
-            document.querySelector('.modal .player__name').textContent = playerName;
-            document.querySelector('.modal').style.display = 'flex';
-        })
-    
-        rejectBtn.addEventListener('click', function(e){
-            e.stopPropagation();
-            confirmform.style.display = 'none';
-    
-        })
-
-    }
-}
 
 function handleLeaveRoom(){
     const exitBtn = document.querySelector('.exit__btn');
     exitBtn.addEventListener('click', function(){
         console.log('exit clicked')
-        socket.emit('exit-room', roomId, dealerId);
-        window.location.replace(`${host}/home`)
+        var res = confirm('Bạn thật sự muốn từ bỏ cơ hội kiếm cơm ?');
+        if (res){
+
+            socket.emit('exit-room', roomId, dealerId);
+            window.location.replace(`${host}/home`)
+        }
     })
 }
 
@@ -143,6 +124,7 @@ function handleDealCard (){
     })
 
     socket.on('card-dealt', function(){
+        document.querySelector('.dealer-reset__btn').disabled = false;
         socket.emit('request-card', roomId, dealerId)
     })
 
@@ -151,15 +133,24 @@ function handleDealCard (){
             renderCardList(playerCard)
 
         }
+        else{
+            document.querySelector('.modal').style.display = 'flex';
+
+            renderCardList(playerCard, '.other-player__card')
+        }
+    })
+
+    socket.on('winner-winner-chicken-dinner', function(result){
+        renderResult(result);
     })
 }
 
 
-function renderCardList (cardList){
+function renderCardList (cardList, otherPlayer=''){
     console.log(cardList)
     if (cardList.length && cardList.length > 0){
         
-        var playerCardList = document.querySelector('.player .card-list.player__card');
+        var playerCardList = document.querySelector(`.player${otherPlayer} .card-list.player__card`);
         var htmls = cardList.map(function(card){
             var html = `
             <li class="card-list__item">
@@ -221,17 +212,14 @@ function handlePlayerTurn (){
             }
             otherPlayer.classList.add('player--end-turn')
             console.log('turn', otherPlayer)
+            endTurnList.push(+userId)
+
         }
         
     })
-}
 
-function activateControl (){
     const hitBtn = document.querySelector('.hit-btn');
     const doneBtn = document.querySelector('.done-btn');
-
-    hitBtn.disabled = false;
-    doneBtn.disabled = false;
 
     hitBtn.addEventListener('click', function(){
         socket.emit('hit-card', roomId, dealerId);
@@ -244,6 +232,15 @@ function activateControl (){
         disableControl();
         socket.emit('show-all', roomId, dealerId)
     })
+}
+
+function activateControl (){
+    const hitBtn = document.querySelector('.hit-btn');
+    const doneBtn = document.querySelector('.done-btn');
+
+    hitBtn.disabled = false;
+    doneBtn.disabled = false;
+
 }
 
 function endTurn(){
@@ -259,7 +256,99 @@ function disableControl(){
     document.querySelector('.done-btn').disabled = true;
 }
 
+function handleShowCard(){
+    socket.on('show-card-result', function(userId, cardList, result){
+        document.querySelector('.modal').style.display = 'flex';
+        renderCardList(cardList, '.other-player__card')
+        var playerItem = document.querySelector(`#player-${userId}`)
+        if (playerItem){
+            showedCardList.push(+userId)
+            playerItem.classList.remove('player--end-turn')
+            switch(result){
+                case -1: 
+                    playerItem.classList.add('player--lose')
+                    break
+                case 0:
+                    playerItem.classList.add('player--draw')
+                    break
+                case 1:
+                    playerItem.classList.add('player--win')
+                    break
+        
+            }
+        }
+    })
 
+    socket.on('show-card-all', function(result){
+        console.log(result)
+        
+        renderResult(result)
+
+    })
+}
+
+function renderResult (result){
+    result.forEach(function(val){
+        var id = +val.id
+        var playerItem = document.querySelector(`#player-${id}`)
+        showedCardList.push(id)
+        endTurnList.push(id)
+        if (playerItem){
+            showedCardList.push(+id)
+            playerItem.classList.remove('player--end-turn')
+            switch(val.res){
+                case -1: 
+                    playerItem.classList.add('player--lose')
+                    break
+                case 0:
+                    playerItem.classList.add('player--draw')
+                    break
+                case 1:
+                    playerItem.classList.add('player--win')
+                    break
+        
+            }
+        }
+    })
+}
+
+
+function showCard(userId){
+    console.log(endTurnList, userId)
+    if (endTurnList.includes(userId) == true ){
+        var playerItem = document.querySelector(`#player-${userId}`)
+        var cardNum = Number(playerItem.querySelector('.player-item__card-number').textContent)
+        console.log('player item', playerItem, cardNum)
+        if (cardNum > 0){
+            var playerName = playerItem.querySelector('.player-item__name').textContent;
+            
+            if (showedCardList.indexOf(userId) == -1){
+                var confirmform = playerItem.querySelector('.confirm-form');
+                var acceptBtn = playerItem.querySelector('.confirm-form__btn--accept');
+                var rejectBtn = playerItem.querySelector('.confirm-form__btn--reject');
+                
+                confirmform.style.display = 'flex'
+            
+                acceptBtn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    confirmform.style.display = 'none';
+                    document.querySelector('.modal .player__name').textContent = playerName;
+                    socket.emit('show-card', roomId, dealerId, userId);
+                })
+            
+                rejectBtn.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    confirmform.style.display = 'none';
+            
+                })
+            }
+            else{
+                socket.emit('request-card', roomId, userId)
+            }
+    
+        }
+    }
+}
 
 
 function hideCard(){
@@ -267,6 +356,23 @@ function hideCard(){
     closeBtn.addEventListener('click', function(){
         document.querySelector('.modal').style.display = 'none';
 
+    })
+}
+
+function handleResetGame (){
+    const resetBtn = document.querySelector('.dealer-reset__btn');
+    resetBtn.addEventListener('click', function(){
+        socket.emit('reset-game', roomId, dealerId);
+    })
+
+    socket.on('game-reset', function(){
+        document.querySelector('.player').className = 'grid__col--6 player';
+        document.querySelector('.player .card-list.player__card').innerHTML = '';
+        disableControl();
+        document.querySelector('.dealer-reset__btn').disabled = true;
+        document.querySelector('.dealer-start__btn').disabled = true;
+        showedCardList = [];
+        endTurnList = [];
     })
 }
 
@@ -278,8 +384,9 @@ function start(){
     handlePlayerBet();
     handleDealCard();
     handlePlayerTurn();
-    
+    handleShowCard();
     hideCard();
+    handleResetGame();
 }
 
 start();

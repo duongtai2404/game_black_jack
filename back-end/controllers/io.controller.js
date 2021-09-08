@@ -32,7 +32,80 @@
 
 // { dealer: { id: dealerId, name: name }, players: new Map(){name: name, bet: 0, card: 0} , cards: [], playersCard: new Map()[], isPlaying: false}
 
+const aceList = [1, 14, 27, 40]
 
+const cardValue = function(card){
+  var val = 0;
+  if (card < 14){
+    val = card % 14;
+    
+  }
+  else if(card < 27){
+    val = (card - 13) % 14;
+  }
+  else if (card < 40){
+    val = (card - 26) % 14;
+  }
+  else if (card <= 52){
+    val = (card - 39) % 14;
+  }
+
+  if (val > 10){
+    return 10;
+  }
+  console.log('val card', card, val)
+  return val;
+}
+
+const cardsValue = function(cards){
+  var aceNum = 0;
+  var sumVal = cards.reduce(function(sum, card){
+    var cardVal = cardValue(card);
+    if (aceList.indexOf(card) != -1){
+      aceNum += 1;
+    }
+    return cardVal + sum;
+  }, 0)
+  console.log(cards, sumVal)
+  for (var i = 0; i < aceNum; i++){
+    if (sumVal + 10 <= 21){
+      sumVal += 10;
+    }
+    else if (sumVal + 9 <= 21){
+      sumVal += 9;
+    }
+    else{
+      break;
+    }
+  }
+
+  return sumVal;
+}
+
+const checkBlackJack = function(cards){
+  var aces = cards.filter(function(val){
+    return aceList.indexOf(val) != -1;
+  })
+  console.log('check ace', aces);
+  if (aces.length > 0){
+    var ten = cards.filter(function(val){
+      return cardValue(val) == 10;
+    })
+    console.log('check ten', ten)
+    if (ten.length > 0){
+      return true;
+    }
+  }
+  return false;
+}
+
+const checkDoubleBJ = function(cards){
+  var aces = cards.filter(function(val){
+    return aceList.indexOf(val) != -1;
+  })
+
+  return aces.length == 2;
+}
 
 const getRoomInfo = function(room){
     var players = []
@@ -73,7 +146,10 @@ const suffleCard = function(){
 
 const setCardTable = function(roomInfo){
   var cards = suffleCard();
+  // var cards = [27, 40,  5, 6,1, 13, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
   roomInfo.cards = cards;
+  roomInfo.playersCard = new Map();
+  roomInfo.result = new Map();
 }
 
 const dealCards = function(roomInfo){
@@ -92,6 +168,61 @@ const dealCards = function(roomInfo){
   roomInfo.dealer.card = dealerCard.length;
   playersCard.set(roomInfo.dealer.id, dealerCard);
 
+}
+
+const checkResultAfterDeal = function(roomInfo){
+  const dealerId = roomInfo.dealer.id
+  const playersCard = roomInfo.playersCard
+  const bjId = []
+  const dbjId = []
+
+  playersCard.forEach(function(val, id){
+    if (id != dealerId){
+      if (checkDoubleBJ(val)){
+        dbjId.push(id);
+      }
+      else if (checkBlackJack(val)){
+        bjId.push(id);
+      }
+    }
+  })
+
+  const dealerCard = playersCard.get(dealerId)
+  const result = roomInfo.result;
+  var bjRes = 1;
+  var dbjRes = 1;
+  var res = false;
+  if (checkDoubleBJ(dealerCard)){
+    bjRes = -1;
+    dbjRes = 0;
+    res = true;
+  }
+  else if (checkBlackJack(dealerCard)){
+    bjRes = 0;
+    dbjRes = 1;
+    res = true;
+  }
+
+
+  bjId.forEach(function(val){
+    result.set(val, bjRes);
+  })
+  dbjId.forEach(function(val){
+    result.set(val, dbjRes)
+  })
+
+  result.set(dealerId, 0)
+  return res;
+}
+
+const dealerBlackJack = function(roomInfo){
+  const playersCard = roomInfo.playersCard
+  const result = roomInfo.result
+  playersCard.forEach(function(val, id){
+    if (result.has(id) == false){
+      result.set(id, -1)
+    }
+  })
 }
 
 const nextTurnId = function(roomInfo){
@@ -138,6 +269,109 @@ const hitCard = function(roomInfo, userId){
   }
 
   return false;
+}
+
+const canShowCard = function(roomInfo, userId){
+  const turn = roomInfo.isPlaying
+  const userTurn = Array.from(roomInfo.playersCard.keys()).indexOf(userId)
+
+  return userTurn < turn
+}
+
+const compareCardVal = function(dealerCard, playerCard){
+  
+  const dealerCardVal = cardsValue(dealerCard)
+  const playerCardVal = cardsValue(playerCard)
+  console.log('dealercard val', dealerCard, dealerCardVal)
+  console.log('playercard val', playerCard, playerCardVal)
+  
+  var result = 0;
+  if (playerCard.length == 5){
+    if (playerCardVal < 22){
+      if (dealerCard.length < 5 || playerCardVal > 21){
+        result = 1;
+      }
+      else if(playerCardVal > dealerCardVal){
+        result = 1;
+      }
+      else if(playerCardVal == dealerCardVal){
+        result = 0;
+      }
+      else{
+        result = -1;
+      }
+    }
+    else{
+      if(dealerCardVal < 14 || dealerCardVal > 21){
+        result = 0;
+      }
+      else{
+        result = -1;
+      }
+    }
+  }
+  else{
+    if(playerCardVal < 16 || playerCardVal > 21){
+      if(dealerCardVal < 14 || dealerCardVal > 21){
+        result = 0;
+      }
+      else{
+        result = -1;
+      }
+    }
+    else{
+      if(dealerCardVal < 14 || dealerCardVal > 21){
+        result = 1;
+      }
+      else if(playerCardVal > dealerCardVal){
+        result = 1;
+      }
+      else if(playerCardVal == dealerCardVal){
+        result = 0;
+      }
+      else{
+        result = -1;
+      }
+    }
+  }
+  
+  return result;
+
+}
+
+const compareAllCard = function(roomInfo){
+  const playersCard = roomInfo.playersCard;
+  const dealerCard = playersCard.get(roomInfo.dealer.id);
+
+  playersCard.forEach(function(card, userId){
+    if (roomInfo.result.has(userId) == false){
+      var result = compareCardVal(dealerCard, card);
+      roomInfo.result.set(userId, result);
+    }
+  })
+}
+
+const getResult = function(roomInfo){ 
+  const result = []
+  roomInfo.result.forEach(function(val, id){
+    result.push({id: id, res: val})
+  })
+
+  return result;
+}
+
+const resetRoom = function(roomInfo){
+  roomInfo.playersCard.clear();
+  roomInfo.result.clear();
+  roomInfo.isPlaying = -1;
+
+  const players = roomInfo.players;
+  players.forEach(function(val, idx){
+    val.card = 0;
+    val.bet = 0;
+  })
+
+  roomInfo.dealer.card = 0;
 }
 
 module.exports = (io, gameStore) => {
@@ -227,11 +461,30 @@ module.exports = (io, gameStore) => {
             socket.emit('room-info', room)
             socket.to(roomIdNumber).emit('card-dealt')
             socket.emit('card-dealt')
-            var turnId = +nextTurnId(roomInfo)
-            console.log('card dealt', gameStore)
-            if (turnId){
-              socket.emit('player-turn', turnId);
-              socket.to(roomIdNumber).emit('player-turn', turnId);
+            var res = checkResultAfterDeal(roomInfo);
+            console.log('check bj', res)
+            if (res){
+              dealerBlackJack(roomInfo)
+              const result = getResult(roomInfo)
+              const dealerCard = roomInfo.playersCard.get(dealerIdNumber)
+              console.log(result)
+              socket.to(roomIdNumber).emit('show-card-all', result, dealerCard);
+              socket.emit('show-card-all', result);
+            }
+            else{
+              if(roomInfo.result.size > 0){
+                const result = getResult(roomInfo)
+                const dealerCard = roomInfo.playersCard.get(dealerIdNumber)
+
+                socket.to(roomIdNumber).emit('winner-winner-chicken-dinner', result, dealerCard)
+                socket.emit('winner-winner-chicken-dinner', result);
+              }
+              var turnId = +nextTurnId(roomInfo)
+              console.log('card dealt', gameStore)
+              if (turnId){
+                socket.emit('player-turn', turnId);
+                socket.to(roomIdNumber).emit('player-turn', turnId);
+              }
             }
           }
         }
@@ -264,13 +517,13 @@ module.exports = (io, gameStore) => {
             socket.emit('card-hit', playerCard)
 
             if (userIdNumber == roomInfo.dealer.id){
-              socket.to(roomIdNumber).emit('dealer-card-change', roomInfo.dealer.card)
+              socket.to(roomIdNumber).emit('dealer-card-change', roomInfo.dealer.card, roomInfo.playersCard.get(userIdNumber))
             }
             else{
               socket.to(roomIdNumber).emit('player-card-change', userIdNumber, roomInfo.players.get(userIdNumber).card);
             }
           }
-          else{
+          if (hitRes == false || roomInfo.playersCard.get(userIdNumber).length == 5){
             socket.emit('turn-ended');
           }
           console.log('hit-card', roomIdNumber, userIdNumber, playerCard)
@@ -305,6 +558,24 @@ module.exports = (io, gameStore) => {
       }
     })
 
+    socket.on('show-card', function(roomId, dealerId, userId){
+      const roomIdNumber = +roomId;
+      const dealerIdNumber = +dealerId;
+      const userIdNumber = +userId;
+
+      if (gameStore.has(roomIdNumber)){
+        const roomInfo = gameStore.get(roomIdNumber)
+        if (roomInfo.dealer.id == dealerIdNumber && canShowCard(roomInfo, userIdNumber)){
+          const playerCard = roomInfo.playersCard.get(userIdNumber)
+          const dealerCard = roomInfo.playersCard.get(dealerIdNumber)
+          result = compareCardVal(dealerCard, playerCard)
+          roomInfo.result.set(userIdNumber, result);
+          socket.emit('show-card-result', userIdNumber, playerCard, result)
+          socket.to(roomIdNumber).emit('show-card-result', userIdNumber, result, dealerCard)
+        }
+      }
+    })
+
     socket.on('show-all', function(roomId, userId){
       const roomIdNumber = +roomId;
       const userIdNumber = +userId
@@ -313,12 +584,30 @@ module.exports = (io, gameStore) => {
         const roomInfo = gameStore.get(roomIdNumber)
         if (isUserTurn(roomInfo, userIdNumber) && roomInfo.dealer.id == userIdNumber){
           const dealerCard = roomInfo.playersCard.get(userIdNumber)
-          socket.to(roomIdNumber).emit('dealer-show-all', dealerCard);
+          compareAllCard(roomInfo)
+          const result = getResult(roomInfo)
+          console.log(result)
+          socket.to(roomIdNumber).emit('show-card-all', result, dealerCard);
+          socket.emit('show-card-all', result);
+        }
+      }
+    })
+
+    socket.on('reset-game', function(roomId, dealerId){
+      const roomIdNumber = +roomId;
+      const dealerIdNumber = +dealerId;
+
+      if (gameStore.has(roomIdNumber)){
+        const roomInfo = gameStore.get(roomIdNumber)
+        if (roomInfo.dealer.id == dealerIdNumber){
+          resetRoom(roomInfo)
+          const room = getRoomInfo(roomInfo)
+          socket.to(roomIdNumber).emit('room-info', room);
+          socket.to(roomIdNumber).emit('game-reset');
+          socket.emit('room-info', room)          
+          socket.emit('game-reset')
         }
       }
     })
   });
-  
-
-
 };

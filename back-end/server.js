@@ -75,7 +75,7 @@ app.post('/create_room', (req, res)=>{
   const dealerId = Math.floor(1000 + Math.random() * 9000);
   const name = req.body.name;
   if (!gameStore.has(roomId)) {
-    gameStore.set(roomId, { dealer: { id: dealerId, name: name, card: 0 }, players: new Map() , cards: [], playersCard: new Map(), isPlaying: -1});
+    gameStore.set(roomId, { dealer: { id: dealerId, name: name, card: 0 }, players: new Map() , isPlaying: -1});
     res.status(200).json({ roomId: roomId, dealerId: dealerId });
   }
 });

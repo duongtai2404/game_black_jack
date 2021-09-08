@@ -8,15 +8,6 @@
   width: 18%;
 }
 
-.player--win {
-  cursor:not-allowed;
-  }
-  
-.player--lose{
-    cursor:not-allowed;
-  
-  }
-
 .dealer__start {
   display: flex;
   flex-direction: column;
