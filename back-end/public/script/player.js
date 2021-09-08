@@ -1,4 +1,4 @@
-const host = 'https://xidzach.herokuapp.com';
+const host = 'https://xidzach-ltd.herokuapp.com';
 
 const socket = io('/');
 
