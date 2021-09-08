@@ -1,67 +1,61 @@
-.main {
-  width: 100vw;
-  height: 100vh;
-  background-color: #b6dca3;
+
+.player-list {
+  height: 55vh;
 }
-.code {
-  padding: 20px 20px;
-  height: 10vh;
+
+.player-item {
+  height: 25vh;
+  width: 18%;
 }
-.teammate {
-  min-height: 53vh;
-}
-.list-player {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-.list-player-item {
-  margin: 0 30px 50px;
-  border-radius: 10px;
-}
-.every-teammate {
-  height: 100px;
-  background-color: white;
-}
-.header-item {
-  height: 30px;
-}
-.body-item {
-  height: 70px;
-  border: 3px solid red;
-}
-.dealer {
-  height: 240px;
-}
-.dealer .start {
+
+.dealer__start {
+  display: flex;
   flex-direction: column;
-  padding: 10px 0px;
+  justify-content: flex-end;
 }
-.dealer .start button {
-  width: 150px;
+
+.dealer-reset__btn {
+  margin-top: 10px;
 }
-.dealer .body {
-  background-color: greenyellow;
-  border-radius: 15px;
-  padding: 24px 5px;
-}
-.dealer .body .list-dealer-card {
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.dealer .body .list-dealer-card .list-dealer-card-item {
-  margin: 0 8px;
-  padding: 0;
-}
-.dealer .body .list-dealer-card .list-dealer-card-item .item {
-  height: 192px;
-}
-.dealer .end {
+
+
+.confirm-form{
+  background-color: var(--white-color);
+  font-size: 1.5rem;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+  display: flex;
   flex-direction: column;
-  padding: 10px 0px;
+  justify-content: space-around;
+  padding: 10px;
+  display: none;
 }
-.dealer .end button {
-  margin-top: 24px;
-  width: 150px;
+
+.confirm-form__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.confirm-form__name {
+  margin-top: 5px;
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
+.confirm-form__btn{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.confirm-form__btn--accept{
+  background-color: var(--primary-color);
+}
+.confirm-form__btn--reject{
+  margin-top: 10px;
+  background-color: var(--lose-color);
 }
