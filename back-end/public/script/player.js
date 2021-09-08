@@ -1,5 +1,5 @@
 
-const host = 'http://localhost:3000';
+const host = 'https://xidach.herokuapp.com';
 
 const socket = io('/');
 
