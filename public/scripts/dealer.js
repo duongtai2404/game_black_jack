@@ -73,7 +73,12 @@ function renderPlayerList(roomInfo) {
 
   players.forEach(function(val){
     var playerItem = document.querySelector(`#player-${val.id}`);
-    playerItem.onclick=showCard(+val.id);
+    if (playerItem){
+      playerItem.addEventListener('click', function(){
+        showCard(+val.id);
+      })
+
+    }
   })
 }
 
