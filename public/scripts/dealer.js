@@ -197,9 +197,11 @@ function handlePlayerTurn() {
   });
 
   socket.on('turn-ended', function () {
-    endTurn();
-    disableControl();
+    // endTurn();
+    // disableControl();
     // socket.emit('next-turn', roomId, playerId);
+    document.querySelector('.hit-btn').disabled = true;
+
   });
 
   socket.on('player-card-change', function (userId, card) {

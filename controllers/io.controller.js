@@ -251,7 +251,7 @@ const compareCardVal = function (dealerCard, playerCard) {
         result = -1;
       }
     } else {
-      if (dealerCardVal < 14 || dealerCardVal > 21) {
+      if (dealerCardVal < 15 || dealerCardVal > 21) {
         result = 0;
       } else {
         result = -1;
@@ -259,13 +259,13 @@ const compareCardVal = function (dealerCard, playerCard) {
     }
   } else {
     if (playerCardVal < 16 || playerCardVal > 21) {
-      if (dealerCardVal < 14 || dealerCardVal > 21) {
+      if (dealerCardVal < 15 || dealerCardVal > 21) {
         result = 0;
       } else {
         result = -1;
       }
     } else {
-      if (dealerCardVal < 14 || dealerCardVal > 21) {
+      if (dealerCardVal < 15 || dealerCardVal > 21) {
         result = 1;
       } else if (playerCardVal > dealerCardVal) {
         result = 1;
