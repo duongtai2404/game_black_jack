@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/assets/css/base.css" />
     <link rel="stylesheet" href="/assets/css/player.css" />
     <link rel="stylesheet" href="/assets/css/dealer.css" />
-    <script src="/socket.io/socket.io.js"></script>
     <script>
       const roomId = '<%= roomId %>';
       const dealerId = '<%= dealerId %>';
@@ -58,8 +57,14 @@
         </div>
       </div>
     </div>
-
-    <script src="/script/dealer.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script>
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = '/script/dealer.js';
+        document.body.appendChild(script);
+      });
+    </script>
     <script type="text/javascript">
       window.onbeforeunload = function () {
         return 'Dude, are you sure you want to leave? Think of the kittens!';

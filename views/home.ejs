@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       const name = localStorage.getItem('name');
       if (name === null) {
@@ -77,7 +76,7 @@
               </button>
             </div>
             <div style="margin-top: 80px; text-align: center">
-              <a href="http://localhost:3000/login">Đổi tên</a>
+              <a href="https://xidzach-ltd.herokuapp.com/login">Đổi tên</a>
             </div>
           </div>
         </div>
@@ -96,9 +95,13 @@
         'Xin chào : ' + `<span style="color: red;">${name}<span>`;
       const createRoomButton = document.getElementById('createRoom');
       createRoomButton.onclick = () => {
-        window.location.replace('http://localhost:3000/dealer');
+        window.location.replace('https://xidzach-ltd.herokuapp.com/dealer');
       };
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = '/script/home.js';
+        document.body.appendChild(script);
+      });
     </script>
-    <script src="/script/home.js"></script>
   </body>
 </html>

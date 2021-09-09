@@ -1,25 +1,19 @@
-
 .player-list {
   height: 55vh;
 }
-
 .player-item {
   height: 25vh;
   width: 18%;
 }
-
 .dealer__start {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
-
 .dealer-reset__btn {
   margin-top: 10px;
 }
-
-
-.confirm-form{
+.confirm-form {
   background-color: var(--white-color);
   font-size: 1.5rem;
   width: 100%;
@@ -34,28 +28,25 @@
   padding: 10px;
   display: none;
 }
-
 .confirm-form__info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-
 .confirm-form__name {
   margin-top: 5px;
   font-weight: 500;
   font-size: 1.8rem;
 }
-
-.confirm-form__btn{
+.confirm-form__btn {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
-.confirm-form__btn--accept{
+.confirm-form__btn--accept {
   background-color: var(--primary-color);
 }
-.confirm-form__btn--reject{
+.confirm-form__btn--reject {
   margin-top: 10px;
   background-color: var(--lose-color);
 }
