@@ -36,7 +36,7 @@ function renderPlayerList(roomInfo) {
       imgSrc = '/assets/img/0.png';
     }
     var html = `
-            <li class="player-item grid__col--2 ${bettedClass}" onclick=showCard(${val.id}) id="player-${val.id}">
+            <li class="player-item grid__col--2 ${bettedClass}"  id="player-${val.id}">
                 <span class="player-item__name">${val.name}</span>
                 <img src="${imgSrc}" alt="" class="player-item__img">
                 <div class="player-item__info">
@@ -70,6 +70,11 @@ function renderPlayerList(roomInfo) {
   });
   console.log(htmls);
   document.querySelector('ul.player-list').innerHTML = htmls.join(' ');
+
+  players.forEach(function(val){
+    var playerItem = document.querySelector(`#player-${val.id}`);
+    playerItem.onclick=showCard(+val.id);
+  })
 }
 
 function handleLeaveRoom() {
