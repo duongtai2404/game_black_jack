@@ -1,0 +1,168 @@
+.main {
+  background-color: var(--primary-color);
+  height: 100vh;
+  width: 100vw;
+  padding: 20px 60px;
+}
+.main-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.room-info {
+  display: flex;
+}
+.room-info__code {
+  background-color: var(--white-color);
+  display: flex;
+  height: 40px;
+  text-align: center;
+  font-size: 1.4rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  box-shadow: 0 2px 1px var(--shadow-color);
+  color: var(--text-color);
+}
+.dealer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px var(--shadow-color);
+  justify-content: space-between;
+  height: 170px;
+}
+.dealer__name {
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+.player-list {
+  margin: 50px 100px 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  list-style-type: none;
+  height: 44vh;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.player-item {
+  text-align: center;
+  background-color: var(--white-color);
+  display: flex;
+  height: 20vh;
+  width: 15%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px var(--shadow-color);
+  margin: 0px 10px;
+  cursor: pointer;
+  position: relative;
+}
+.player-item__info {
+  margin-top: 5px;
+  width: 100%;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+.player-item__name {
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+}
+.player-item__img {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.player-item__card-number {
+  font-size: 1.4rem;
+}
+.player-area {
+  margin-top: 80px;
+  display: flex;
+}
+.exit {
+  display: flex;
+  align-items: flex-end;
+}
+.player-bet {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.player-bet__input {
+  font-size: 1.4rem;
+  text-align: center;
+  line-height: 1.4rem;
+  height: 40px;
+}
+.player-bet__btn {
+  margin-top: 10px;
+}
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--white-color);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px var(--shadow-color);
+  justify-content: space-between;
+  height: 200px;
+}
+.player__name {
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  margin-bottom: 10px;
+}
+.player-control {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+.done-btn {
+  margin-top: 10px;
+}
+.player--betted {
+  border: var(--border-size) solid var(--betted-color);
+}
+.player--turn {
+  border: var(--border-size) solid var(--turn-color);
+}
+.player--end-turn {
+  border: var(--border-size) solid var(--end-turn-color);
+}
+.player--win {
+  background-color: var(--win-color);
+}
+.player--lose {
+  background-color: var(--lose-color);
+}
+.player--draw {
+  background-color: var(--draw-color);
+}
+.other-player-info {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.other-player {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 250px;
+}
+.other-player__card {
+  height: 100%;
+}
+.close-player-btn {
+  width: 20%;
+  background-color: var(--primary-color);
+}

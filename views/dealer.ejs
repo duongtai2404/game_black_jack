@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/reset.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/player.css" />
+    <link rel="stylesheet" href="/assets/css/dealer.css" />
+    <script>
+      const roomId = '<%= roomId %>';
+      const dealerId = '<%= dealerId %>';
+    </script>
+    <title>Dealer</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="grid main-table">
+        <div class="grid-row room-info">
+          <span class="grid__col--2 room-info__code"><%= roomId %></span>
+        </div>
+        <ul class="grid_row player-list"></ul>
+        <div class="grid-row player-area">
+          <div class="exit grid__col--1">
+            <button class="control-btn btn exit__btn">Thoát</button>
+          </div>
+          <div class="dealer__start grid__col--2">
+            <button class="btn control-btn dealer-start__btn" disabled>
+              Phát bài
+            </button>
+
+            <button class="btn control-btn dealer-reset__btn" disabled>
+              Chơi lại
+            </button>
+          </div>
+          <div class="grid__col--6 player">
+            <div class="player__name">Le Tuan Dat</div>
+            <ul class="card-list player__card"></ul>
+          </div>
+
+          <div class="player-control grid__col--2">
+            <button class="btn control-btn hit-btn" disabled>Rút</button>
+            <button class="btn control-btn done-btn" disabled>Xét hết</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal">
+        <div class="grid other-player-info">
+          <div class="grid-row other-player">
+            <div class="grid__col--6 player other-player__card">
+              <div class="player__name">Le Tuan Dat</div>
+              <ul class="card-list player__card"></ul>
+              <button class="close-player-btn btn control-btn">Đóng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script>
+      window.addEventListener('load', () => {
+        const script = document.createElement('script');
+        script.src = '/script/dealer.js';
+        document.body.appendChild(script);
+      });
+    </script>
+    <script type="text/javascript">
+      window.onbeforeunload = function () {
+        return 'Dude, are you sure you want to leave? Think of the kittens!';
+      };
+    </script>
+  </body>
+</html>
