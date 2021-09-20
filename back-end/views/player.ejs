@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,13 +8,14 @@
     <link rel="stylesheet" href="/assets/css/reset.css">
     <link rel="stylesheet" href="/assets/css/base.css">
     <link rel="stylesheet" href="/assets/css/player.css">
-    
+
     <title>Document</title>
     <script>
         const roomId = '<%= roomId %>';
         const playerId = '<%= playerId %>';
-      </script>
+    </script>
 </head>
+
 <body>
     <div class="main">
         <div class="grid main-table">
@@ -58,10 +60,10 @@
                     </div>
   
                 </li> -->
-                
+
             </ul>
-            
-           
+
+
             <div class="grid-row player-area">
                 <div class="exit grid__col--1">
                     <button class="control-btn btn exit__btn">Thoát</button>
@@ -74,7 +76,7 @@
                 <div class="grid__col--6 player">
                     <div class="player__name">Le Tuan Dat</div>
                     <ul class="card-list player__card">
-                       
+
                     </ul>
                 </div>
 
@@ -84,7 +86,7 @@
 
                 </div>
 
-        </div>
+            </div>
 
 
         </div>
@@ -92,19 +94,19 @@
             <div class="grid other-player-info">
 
                 <div class="grid-row other-player ">
-                    
+
                     <div class="grid__col--6 player other-player__card">
                         <div class="player__name">Le Tuan Dat</div>
                         <ul class="card-list player__card">
                             <li class="card-list__item">
                                 <img src="/assets/img/2.png" alt="" class="card-list__item-img">
                             </li>
-                            
-                                            
+
+
                         </ul>
                         <button class="close-player-btn btn control-btn">Đóng</button>
                     </div>
-    
+
                 </div>
             </div>
 
@@ -112,10 +114,11 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script/player.js"></script>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         window.onbeforeunload = function() {
             return "Dude, are you sure you want to leave? Think of the kittens!";
         }
-    </script>
+    </script> -->
 </body>
+
 </html>
